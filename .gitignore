@@ -1,0 +1,12 @@
+﻿[Dd]ebug
+/TEMP
+[Rr]elease
+/ipch
+*.opensdf
+*.sdf
+*.suo
+*.hps
+*.hvs
+bin/
+obj/
+*.user
