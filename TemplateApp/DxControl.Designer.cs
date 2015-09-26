@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "DxControl";
             this.SizeChanged += new System.EventHandler(this.DxControl_SizeChanged);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.OglControl_Paint);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.DxControl_Paint);
             this.ResumeLayout(false);
 
         }

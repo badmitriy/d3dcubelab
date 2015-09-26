@@ -31,6 +31,16 @@ inline void CheckHR(HRESULT hr)
 class Directx11
 {
 public:
+	struct RenderingUnit
+	{
+		CComPtr<ID3D11Buffer> vertexBuffer;
+		CComPtr<ID3D11Buffer> indexBuffer;
+		CComPtr<ID3D11ShaderResourceView> ColorTexRV;
+
+		enum class UnitType{ Triangle } uType;
+		UINT IndexCount;
+	};
+protected:
 	struct VertexForColorTriangle
 		{
 			DirectX::XMFLOAT3 Pos;
@@ -41,15 +51,6 @@ public:
 	{
 		DirectX::XMMATRIX mView;
 		DirectX::XMMATRIX mProjection;
-	};
-	struct RenderingUnit
-	{
-		CComPtr<ID3D11Buffer> vertexBuffer;
-		CComPtr<ID3D11Buffer> indexBuffer;
-		CComPtr<ID3D11ShaderResourceView> ColorTexRV;
-
-		enum class UnitType{Triangle} uType;
-		UINT IndexCount;
 	};
 
 
@@ -211,7 +212,7 @@ public:
 	void ClearAll()
 	{
 	SavedScene.clear();
-	FLOAT colorRGBA[]={1.0f,1.0f,1.0f,1.0f};
+	FLOAT colorRGBA[]={1.0f,0.0f,1.0f,1.0f};
 	context->ClearRenderTargetView(renderTargetView, colorRGBA);
 	context->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 	context->RSSetState(rasterizerState);
@@ -340,6 +341,10 @@ public:
 		UpdateProectionsAndLightingData();
 		for(auto& i:scene)RenderUnit(i);
 	}
+	void AddToSaved(RenderingUnit& unit)
+	{
+		SavedScene.push_back(unit);
+	}
 
 	void RenderSavedData()
 	{
@@ -367,8 +372,6 @@ public:
 
 	DirectX::XMFLOAT4X4 ProjectionMatrix;
 	DirectX::XMFLOAT4X4 ModelViewMatrix;
-	
-
 };
 
 }

@@ -16,13 +16,9 @@ namespace TemplateApp
         public Form1()
         {
             InitializeComponent();
-            comboBox1.SelectedIndex = 0;
         }
-        bool isDiagonal = true;
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isDiagonal = comboBox1.SelectedIndex == 0;
-            dxControl1.RenderParameter = isDiagonal ? 1 : 0;
             dxControl1.Invalidate();
         }
 

@@ -31,6 +31,7 @@ CPP_API void PrepareScene(int handle,int w,int h)
 	if (finded != device->end())
 	{
 		finded->second->CreateTarget(w, h);
+		finded->second->ClearAll();
 		vector<array<array<int, 3>, 2>> triangles;
 
 		array<array<int, 3>, 2> triangle;
@@ -40,9 +41,9 @@ CPP_API void PrepareScene(int handle,int w,int h)
 
 		vector<array<double, 3>> xyz;
 		xyz.resize(3);
-		xyz[0] = { 0, 0, 0 };
-		xyz[1] = { 100, 0, 0 };
-		xyz[2] = { 0, 100, 0 };
+		xyz[0] = { 0, 0, 0.5 };
+		xyz[1] = { 0.5, 0, 0.5 };
+		xyz[2] = { 0, 0.5, 0.5 };
 
 		vector<array<double, 3>> normals;
 		normals.resize(3);
@@ -53,8 +54,8 @@ CPP_API void PrepareScene(int handle,int w,int h)
 		finded->second->RenderStart();
 
 		auto unit = finded->second->CreateTriangleColorUnit(triangles, xyz, normals);
-		finded->second->SavedScene.push_back(unit);
-		finded->second->RenderScene(finded->second->SavedScene);
+		finded->second->AddToSaved(unit);
+		finded->second->RenderSavedData();
 		finded->second->EndRender();
 	}
 }
@@ -67,5 +68,6 @@ CPP_API void RenderScene(int handle)
 		DirectX::XMStoreFloat4x4(&(finded->second->ProjectionMatrix), DirectX::XMMatrixIdentity());
 
 		finded->second->RenderSavedData();
+		finded->second->EndRender();
 	}
 }

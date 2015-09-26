@@ -12,7 +12,5 @@ float4 main( VS_OUTPUT input ) : SV_Target
 {
 	//float intens=mul(input.Normal,float4(0,-1,0,0));
 
-	//return float4(input.value, intens, 0.0f, input.Color[3]);
-
     return input.color;
 }

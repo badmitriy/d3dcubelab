@@ -37,13 +37,7 @@ namespace TemplateApp
         }
         protected override void OnPaintBackground(PaintEventArgs pevent) { }
 
-        int renderParameter;
-        public int RenderParameter
-        {
-            get { return renderParameter; }
-            set { renderParameter = value; }
-        }
-        private void OglControl_Paint(object sender, PaintEventArgs e)
+        private void DxControl_Paint(object sender, PaintEventArgs e)
         {
             if(initialized)  DllImportFunctions.RenderScene((int)Handle);
         }
