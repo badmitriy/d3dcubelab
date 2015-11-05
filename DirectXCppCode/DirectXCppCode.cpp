@@ -35,7 +35,7 @@ CPP_API void PrepareScene(int handle,int w,int h)
 		vector<array<array<int, 3>, 2>> triangles;
 
 		array<array<int, 3>, 2> triangle;
-		triangle[0] = { 0, 1, 2 };
+		triangle[0] = { 0, 2, 1 };
 		triangle[1] = { 128, 0, 128 };
 		triangles.push_back(triangle);
 
