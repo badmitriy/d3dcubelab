@@ -42,8 +42,8 @@ CPP_API void PrepareScene(int handle,int w,int h)
 		vector<array<double, 3>> xyz;
 		xyz.resize(3);
 		xyz[0] = { 0, 0, 0.5 };
-		xyz[1] = { 0.5, 0, 0.5 };
-		xyz[2] = { 0, 0.5, 0.5 };
+		xyz[1] = { 1, 0, 0.5 };
+		xyz[2] = { 0, 1, 0.5 };
 
 		vector<array<double, 3>> normals;
 		normals.resize(3);

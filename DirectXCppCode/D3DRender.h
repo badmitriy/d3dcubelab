@@ -63,6 +63,10 @@ protected:
 	CComPtr<ID3D11RenderTargetView> renderTargetView;
 	CComPtr<ID3D11DepthStencilView> depthStencilView;
 
+
+	CComPtr<ID3D11ShaderResourceView> textureView;
+
+
 	CComPtr<ID2D1RenderTarget> renderTarget2D;
 	CComPtr<ID2D1Factory> factory2D;
 
@@ -128,8 +132,10 @@ public:
 		sd.SampleDesc.Quality = 0;
 		sd.Windowed = TRUE;
 
-		CheckHR(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_BGRA_SUPPORT, FeatureLevels, 6,
-				D3D11_SDK_VERSION, &sd, &swapChain, &device, &pFeatureLevel, &context));
+		//CheckHR(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_BGRA_SUPPORT, FeatureLevels, 6,
+		//		D3D11_SDK_VERSION, &sd, &swapChain, &device, &pFeatureLevel, &context));
+		CheckHR(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_WARP, NULL, D3D11_CREATE_DEVICE_BGRA_SUPPORT, FeatureLevels, 6,
+			D3D11_SDK_VERSION, &sd, &swapChain, &device, &pFeatureLevel, &context));
 
 		CreateShaders();				
 
@@ -157,6 +163,7 @@ public:
 		context->VSSetConstantBuffers(0, 1, &constantBufferForVertexShader.p);
 
 	}
+	HRESULT CreateDDSTextureFromFile(ID3D11Device* d3dDevice, const wchar_t* fileName, ID3D11Resource** texture, ID3D11ShaderResourceView** textureView, size_t maxsize = 0);
 	void CreateTarget(int width, int height)
 	{					
 		renderTarget.Release();			
@@ -201,7 +208,12 @@ public:
 		CComPtr<ID2D1SolidColorBrush> scbrush;
 		CheckHR(renderTarget2D->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black),&scbrush));
 		current2DBrush=scbrush;
+
+
+		CheckHR(CreateDDSTextureFromFile(device, L"TextureExample.dds", NULL, &textureView));
+
 	}
+
 	void SetNewSolidBrush(D2D1::ColorF col)
 	{
 		current2DBrush.Release();
@@ -252,6 +264,8 @@ public:
 			context->IASetInputLayout(vertexLayout);
 			context->VSSetShader(vertexShader, nullptr, 0);
 			context->PSSetShader(pixelShader, nullptr, 0);
+			context->PSSetShaderResources(0, 1,&textureView.p);//передаем текстуру в шейдер
+
 			context->DrawIndexed(unit.IndexCount, 0, 0);
 		}
 		break;
