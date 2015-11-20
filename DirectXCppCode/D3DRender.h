@@ -364,6 +364,28 @@ public:
 	{
 		RenderScene(SavedScene);
 		context->Flush();
+
+		renderTarget2D->BeginDraw();
+		std::wstring txt = L"Hello, world";
+		ResetTextFormat(L"Times New Roman", false, true, 18);
+		textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT::DWRITE_TEXT_ALIGNMENT_LEADING);
+		CComPtr<IDWriteTextLayout> layout;
+		auto sz = renderTarget2D->GetSize();
+		writeFactory->CreateTextLayout(txt.c_str(), (UINT32) txt.length(), textFormat, sz.width, sz.height, &layout);
+		D2D1_POINT_2F p = { 350, 200 };
+
+		renderTarget2D->DrawTextLayout(p, layout, current2DBrush);
+
+		CComPtr<ID2D1SolidColorBrush> scbrush;
+		CheckHR(renderTarget2D->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::OrangeRed), &scbrush));
+
+		D2D1_ELLIPSE ellipse;
+		ellipse.point = { 100, 100 };
+		ellipse.radiusX = 100;
+		ellipse.radiusY = 50;
+		renderTarget2D->DrawEllipse(ellipse, scbrush, 3);
+		CheckHR(renderTarget2D->EndDraw());
+
 		swapChain->Present(0, 0);
 	}
 
