@@ -56,9 +56,9 @@ public class DllImportFunctions
     public static extern void InitDirectX(int hwnd);
 
     [DllImport("DirectXCppCode.Dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "PrepareScene")]
-    public static extern void PrepareScene(int hdc, int w, int h);
+    public static extern void PrepareScene(int hwnd, int w, int h);
 
     [DllImport("DirectXCppCode.Dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "RenderScene")]
-    public static extern void RenderScene(int hdc);
+    public static extern void RenderScene(int hwnd);
 
 }
