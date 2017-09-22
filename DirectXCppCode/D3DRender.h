@@ -210,7 +210,7 @@ public:
 		current2DBrush=scbrush;
 
 
-		CheckHR(CreateDDSTextureFromFile(device, L"TextureExample.dds", NULL, &textureView));
+		CheckHR(CreateDDSTextureFromFile(device, L"..\\TextureExample.dds", NULL, &textureView));
 
 	}
 

@@ -51,7 +51,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="TextureExample.dds">
+    <Image Include="..\TextureExample.dds">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>
