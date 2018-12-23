@@ -5,7 +5,7 @@
 #include <exception>
 #include <map>
 #include <memory>
-
+#include <fstream>
 #include "D3DRender.h"
 
 #pragma comment(lib, "D3d11.lib")
@@ -36,15 +36,18 @@ CPP_API void PrepareScene(int handle,int w,int h)
 
 		array<array<int, 3>, 2> triangle;
 		triangle[0] = { 0, 2, 1 };
-		triangle[1] = { 128, 0, 128 };
+		triangle[1] = { 0, 0, 0 };
 		triangles.push_back(triangle);
-
+		//изменено на отрисовку нескольких треугольников
 		vector<array<double, 3>> xyz;
-		xyz.resize(3);
-		xyz[0] = { 0, 0, 0.5 };
-		xyz[1] = { 1, 0, 0.5 };
-		xyz[2] = { 0, 1, 0.5 };
-
+		std::ifstream fin("cubevert.txt");
+		double x, y, z;
+		while(fin >> x)//не так конечно, будет
+		{
+			fin >> y;
+			fin >> z;
+			xyz.push_back({ x,y,z });
+		}
 		vector<array<double, 3>> normals;
 		normals.resize(3);
 		normals[0] = { 0, 0, 1 };
