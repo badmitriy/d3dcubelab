@@ -41,13 +41,17 @@ CPP_API void PrepareScene(int handle,int w,int h)
 		//изменено на отрисовку нескольких треугольников
 		vector<array<double, 3>> xyz;
 		std::ifstream fin("cubevert.txt");
-		double x, y, z;
-		while(fin >> x)//не так конечно, будет
-		{
-			fin >> y;
-			fin >> z;
-			xyz.push_back({ x,y,z });
-		}
+		//double x, y, z;
+		//while(fin >> x)//не так конечно, будет
+		//{
+		//	fin >> y;
+		//	fin >> z;
+		//	xyz.push_back({ x,y,z });
+		//}
+		xyz.resize(3);
+		xyz[0] = { 0,0,0 };
+		xyz[1] = { 0,1,0 };
+		xyz[2] = { 1,0,0 };
 		vector<array<double, 3>> normals;
 		normals.resize(3);
 		normals[0] = { 0, 0, 1 };
