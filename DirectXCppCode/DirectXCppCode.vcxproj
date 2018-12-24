@@ -76,7 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="cubevert.txt" />
+    <Text Include="..\cubevert.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

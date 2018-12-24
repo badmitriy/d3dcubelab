@@ -16,7 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="cubevert.txt">
+    <Text Include="..\cubevert.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

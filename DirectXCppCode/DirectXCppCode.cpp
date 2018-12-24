@@ -34,30 +34,29 @@ CPP_API void PrepareScene(int handle,int w,int h)
 		finded->second->ClearAll();
 		vector<array<array<int, 3>, 2>> triangles;
 
-		array<array<int, 3>, 2> triangle;
-		triangle[0] = { 0, 2, 1 };
-		triangle[1] = { 0, 0, 0 };
-		triangles.push_back(triangle);
 		//изменено на отрисовку нескольких треугольников
 		vector<array<double, 3>> xyz;
-		std::ifstream fin("cubevert.txt");
-		//double x, y, z;
-		//while(fin >> x)//не так конечно, будет
-		//{
-		//	fin >> y;
-		//	fin >> z;
-		//	xyz.push_back({ x,y,z });
-		//}
-		xyz.resize(3);
-		xyz[0] = { 0,0,0 };
-		xyz[1] = { 0,1,0 };
-		xyz[2] = { 1,0,0 };
-		vector<array<double, 3>> normals;
-		normals.resize(3);
-		normals[0] = { 0, 0, 1 };
-		normals[1] = { 0, 0, 1 };
-		normals[2] = { 0, 0, 1 };
-
+		std::ifstream fin(L"..\\cubevert.txt");
+		double x, y, z;
+		while(fin >> x)//не так конечно, будет
+		{
+		fin >> y;
+		fin >> z;
+		xyz.push_back({ x,y,z });
+		}
+		fin.close();
+		//xyz.resize(3);
+		//xyz[0] = { 0,0,0 };
+		//xyz[1] = { 0,1,0 };
+		//xyz[2] = { 1,0,0 };
+		vector<array<double, 3>> normals(xyz.size(), {1,1,1});
+		array<array<int, 3>, 2> triangle;
+		triangle[0] = { 0, 1, 2 };
+		triangle[1] = { 0, 255, 255 };
+		for (int i = 0; i < xyz.size() / 3; i++)
+		{
+			triangles.push_back(triangle);
+		}
 		finded->second->RenderStart();
 
 		auto unit = finded->second->CreateTriangleColorUnit(triangles, xyz, normals);
