@@ -20,11 +20,11 @@ VS_OUTPUT main( float4 Pos : POSITION, float4 Color : COLOR , float3 Normal : NO
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
 	output.Pos = Pos;
-    //output.Pos = mul( Pos, View );
-    //output.Pos = mul( output.Pos, Projection );
+    output.Pos = mul( Pos, View );
+    output.Pos = mul( output.Pos, Projection );
 	//output.Normal=mul( Normal, View );
 	//output.Normal=mul( output.Normal, Projection );
-    //output.color = Color;
-	output.color = Pos;
+    output.color = Color;
+	//output.color = Pos;
 	return output;
 }

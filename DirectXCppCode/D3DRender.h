@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 #include <array>
+#include <cmath>
 namespace DX
 {
 	namespace Shaders
@@ -231,11 +232,14 @@ public:
 	}
 	void UpdateProectionsAndLightingData()
 	{
+		using namespace DirectX;
 		ConstantBufferStruct cb;
-		DirectX::XMMATRIX xma = DirectX::XMMatrixRotationX(30);
-		DirectX::XMMATRIX yma = DirectX::XMMatrixRotationY(30);
-		//cb.mView = XMMatrixTranspose(XMLoadFloat4x4(&ModelViewMatrix));
-		cb.mView = XMMatrixTranspose(xma*yma);
+		const double pi = 3.14159265359;
+		XMMATRIX xma = XMMatrixRotationX(30 / 180 * pi);
+		//XMMATRIX yma = XMMatrixRotationY(30 / 180 * pi);
+		//XMMATRIX zma = XMMatrixRotationZ(30 / 180 * pi);
+
+		cb.mView = XMMatrixTranspose(xma);//*yma*zma);
 		cb.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix));
 		context->UpdateSubresource(constantBufferForVertexShader, 0, nullptr, &cb, 0, 0);
 	}
@@ -378,12 +382,12 @@ public:
 		RenderScene(SavedScene);
 		context->Flush();
 
-		renderTarget2D->BeginDraw();
+		//renderTarget2D->BeginDraw();
 		//std::wstring txt = L"Hello, world";
 		//ResetTextFormat(L"Times New Roman", false, true, 18);
 		//textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT::DWRITE_TEXT_ALIGNMENT_LEADING);
-		CComPtr<IDWriteTextLayout> layout;
-		auto sz = renderTarget2D->GetSize();
+		//CComPtr<IDWriteTextLayout> layout;
+		//auto sz = renderTarget2D->GetSize();
 		//writeFactory->CreateTextLayout(txt.c_str(), (UINT32) txt.length(), textFormat, sz.width, sz.height, &layout);
 		//D2D1_POINT_2F p = { 350, 200 };
 
@@ -397,7 +401,7 @@ public:
 		//ellipse.radiusX = 100;
 		//ellipse.radiusY = 50;
 		///renderTarget2D->DrawEllipse(ellipse, scbrush, 3);
-		CheckHR(renderTarget2D->EndDraw());
+		//CheckHR(renderTarget2D->EndDraw());
 
 		swapChain->Present(0, 0);
 	}
