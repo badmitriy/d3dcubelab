@@ -235,11 +235,13 @@ public:
 		using namespace DirectX;
 		ConstantBufferStruct cb;
 		const double pi = 3.14159265359;
-		XMMATRIX xma = XMMatrixRotationX(30 / 180 * pi);
+		auto sz= renderTarget2D->GetSize();
+		XMMATRIX sma = XMMatrixScaling(100.0 / sz.width, 100.0 / sz.height, 1);
+		XMMATRIX xma = XMMatrixRotationX(45 / 180 * pi);
 		//XMMATRIX yma = XMMatrixRotationY(30 / 180 * pi);
 		//XMMATRIX zma = XMMatrixRotationZ(30 / 180 * pi);
 
-		cb.mView = XMMatrixTranspose(xma);//*yma*zma);
+		cb.mView = XMMatrixTranspose(sma);//(xma*sma);
 		cb.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix));
 		context->UpdateSubresource(constantBufferForVertexShader, 0, nullptr, &cb, 0, 0);
 	}
