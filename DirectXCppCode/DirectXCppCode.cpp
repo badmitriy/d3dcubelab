@@ -37,29 +37,35 @@ CPP_API void PrepareScene(int handle,int w,int h)
 		//изменено на отрисовку нескольких треугольников
 		vector<array<double, 3>> xyz;
 		std::ifstream fin(L"..\\cubevert.txt");
-		double x, y, z;
+		
+		array<array<int, 3>, 2> triangle;
+		vector<array<double,2>> vp;
+		double x, y, z, v, p;
 		while(fin >> x)//не так конечно, будет
-		{
-		fin >> y;
-		fin >> z;
-		xyz.push_back({ x,y,z });
+		{//из-за такого способа ввода входной файл может быть отчень чувствителен к лишним символам-разделителям 
+			//особенно в конце файла
+			fin >> y >>z >>v >>p;
+			xyz.push_back({ x,y,z });
+			vp.push_back({ v / 6, p });// /6, чтобы подогнать под текстурные координаты граней куба
 		}
 		fin.close();
-		//xyz.resize(3);
-		//xyz[0] = { 0,0,0 };
-		//xyz[1] = { 0,1,0 };
-		//xyz[2] = { 1,0,0 };
-		vector<array<double, 3>> normals(xyz.size(), {1,1,1});
-		array<array<int, 3>, 2> triangle;
-		triangle[0] = { 0, 1, 2 };
-		triangle[1] = { 0, 255, 255 };
-		for (int i = 0; i < xyz.size() / 3; i++)
+		int k = -1;
+		for (int i = 0; i < xyz.size()/3; i++)
 		{
+			triangle[0] = { ++k , ++k, ++k };
+			triangle[1] = { 0,0,0 };
 			triangles.push_back(triangle);
+			vp[3 * i][0] += int(i / 2) / 6.0;
+			vp[3 * i + 1][0] += int(i / 2) / 6.0;
+			vp[3 * i + 2][0] += int(i / 2) / 6.0;// и прибавить  [i/2] /6.0,
+							// т.к. каждый второй треугольник в текстурных координатах сдвигается
+			//по y координате не растянуто
 		}
+		vector<array<double, 3>> normals(xyz.size(), {1,1,1});
+
 		finded->second->RenderStart();
 
-		auto unit = finded->second->CreateTriangleColorUnit(triangles, xyz, normals);
+		auto unit = finded->second->CreateTriangleColorUnit(triangles, xyz, normals, vp);
 		finded->second->AddToSaved(unit);
 		finded->second->RenderSavedData();
 		finded->second->EndRender();

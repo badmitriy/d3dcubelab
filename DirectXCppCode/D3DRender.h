@@ -232,7 +232,10 @@ public:
 	void UpdateProectionsAndLightingData()
 	{
 		ConstantBufferStruct cb;
-		cb.mView = XMMatrixTranspose(XMLoadFloat4x4(&ModelViewMatrix));
+		DirectX::XMMATRIX xma = DirectX::XMMatrixRotationX(30);
+		DirectX::XMMATRIX yma = DirectX::XMMatrixRotationY(30);
+		//cb.mView = XMMatrixTranspose(XMLoadFloat4x4(&ModelViewMatrix));
+		cb.mView = XMMatrixTranspose(xma*yma);
 		cb.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix));
 		context->UpdateSubresource(constantBufferForVertexShader, 0, nullptr, &cb, 0, 0);
 	}
@@ -273,7 +276,8 @@ public:
 	}
 	RenderingUnit CreateTriangleColorUnit(std::vector<std::array<std::array<int, 3>,2>>& Triangles,
 											std::vector<std::array<double, 3>>& vertexes,
-											std::vector<std::array<double, 3>>& normals) //в паре первое -- треугольник, второе -- rgb цвет
+											std::vector<std::array<double, 3>>& normals,
+											std::vector<std::array<double, 2>>& texcord) //в паре первое -- треугольник, второе -- rgb цвет
 	{
 		RenderingUnit unit;
 		unit.uType=RenderingUnit::UnitType::Triangle;
@@ -310,11 +314,18 @@ public:
 			for(int j=0;j<3;j++)
 			{
 				int ver=Triangles[i][0][j];
-				indexarray[i*3+j]=ver;
+				int magic_number = i * 3 + j;
+				indexarray[magic_number]=ver;
+				
 				DirectX::XMFLOAT4 Col;
-				Col.x=Triangles[i][1][0]/255.;
-				Col.y=Triangles[i][1][1]/255.;
-				Col.z=Triangles[i][1][2]/255.;
+				//по неизвестной приичине цвет не передавался, а через него передавались текстурные координаты
+				//поскольку цвет был один на треугольник, пришлось всё поменять
+
+				//Col.x = Triangles[i][1][0];
+				//Col.y = Triangles[i][1][1];
+				Col.x = texcord[magic_number][0];
+				Col.y = texcord[magic_number][1];
+				Col.z = Triangles[i][1][2];//не используется
 				Col.w=1;
 
 				if(vertarray[ver].Color.x == -1)
@@ -328,7 +339,7 @@ public:
 						int newver = (int) vertarray.size();
 						vertarray.push_back(vertarray[ver]);
 						vertarray[newver].Color=Col;
-						indexarray[i*3+j]=newver;
+						indexarray[magic_number]=newver;
 					}
 				}
 			}

@@ -17,8 +17,9 @@ float4 main( VS_OUTPUT input ) : SV_Target
 {
 	//float intens=mul(input.Normal,float4(0,-1,0,0));
 	float2 texturecoor;
-	texturecoor[0] = input.color[0];
-	texturecoor[1] = 1-input.color[1];
+	texturecoor[0] = input.color[0];// вроде новые текстурные координаты изначально подохдят, 
+									//поэтому преобразование ниже не нужно
+	texturecoor[1] = input.color[1];//1-input.color[1];
 	return gTexture.Sample(TextureSampler, texturecoor);
 //    return input.color;
 }
